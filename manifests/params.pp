@@ -18,6 +18,7 @@ class nsd::params {
       $conf_dir       = '/var/nsd/etc'
       $group          = '_nsd'
       $manage_package = false
+      $package_name   = undef
       $username       = '_nsd'
       $zonesdir       = '/var/nsd/zones'
     }
