@@ -57,6 +57,7 @@ class nsd (
   validate_absolute_path($conf_dir)
   validate_string($group)
   validate_bool($manage_control)
+  validate_bool($manage_package)
   validate_string($package_name)
   validate_string($service_name)
 
