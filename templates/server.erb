@@ -1,0 +1,142 @@
+server:
+<% if @server_count -%>
+	server-count: <%= @server_count %>
+<% end -%>
+<% if @ip_address -%>
+<%   @ip_address.each do |i| -%>
+	ip-address: <%= i %>
+<%   end -%>
+<% end -%>
+<% if not @ip_transparent.nil? -%>
+	ip_transparent: <%= @ip_transparent == true ? 'yes' : 'no' %>
+<% end -%>
+<% if not @reuseport.nil? -%>
+	reuseport: <%= @reuseport == true ? 'yes' : 'no' %>
+<% end -%>
+<% if not @do_ip4.nil? -%>
+	do-ip4: <%= @do_ip4 == true ? 'yes' : 'no' %>
+<% end -%>
+<% if not @do_ip6.nil? -%>
+	do-ip6: <%= @do_ip6 == true ? 'yes' : 'no' %>
+<% end -%>
+<% if @port -%>
+	port: <%= @port %>
+<% end -%>
+<% if @verbosity -%>
+	verbosity: <%= @verbosity %>
+<% end -%>
+<% if @username -%>
+	username: <%= @username %>
+<% end -%>
+<% if @chroot -%>
+	chroot: "<%= @chroot %>"
+<% end -%>
+<% if @zonesdir -%>
+	zonesdir: "<%= @zonesdir %>"
+<% end -%>
+<% if @zonelistfile -%>
+	zonelistfile: "<%= @zonelistfile %>"
+<% end -%>
+<% if @database -%>
+	database: "<%= @database %>"
+<% end -%>
+<% if @logfile -%>
+	logfile: "<%= @logfile %>"
+<% end -%>
+<% if @pidfile -%>
+	pidfile: "<%= @pidfile %>"
+<% end -%>
+<% if @xfrdfile -%>
+	xfrdfile: "<%= @xfrdfile %>"
+<% end -%>
+<% if @xfrdir -%>
+	xfrdir: "<%= @xfrdir %>"
+<% end -%>
+<% if not @hide_version.nil? -%>
+	hide-version: <%= @hide_version == true ? 'yes' : 'no' %>
+<% end -%>
+<% if @version -%>
+	version: "<%= @version %>"
+<% end -%>
+<% if @identity -%>
+	identity: "<%= @identity %>"
+<% end -%>
+<% if @nsid -%>
+	nsid: "<%= nsid %>"
+<% end -%>
+<% if @tcp_count -%>
+	tcp-count: <%= @tcp_count %>
+<% end -%>
+<% if @tcp_query_count -%>
+	tcp-query-count: <%= @tcp_query_count %>
+<% end -%>
+<% if @tcp_timeout -%>
+	tcp-timeout: <%= @tcp_timeout %>
+<% end -%>
+<% if @ipv4_edns_size -%>
+	ipv4-edns-size: <%= @ipv4_edns_size %>
+<% end -%>
+<% if @ipv6_edns_size -%>
+	ipv6-edns-size: <%= @ipv6_edns_size %>
+<% end -%>
+<% if @statistics -%>
+	statistics: <%= @statistics %>
+<% end -%>
+<% if @xfrd_reload_timeout -%>
+	xfrd-reload-timeout: <%= @xfrd_reload_timeout %>
+<% end -%>
+<% if not @log_time_ascii.nil? -%>
+	log-time-ascii: <%= @log_time_ascii == true ? 'yes' : 'no' %>
+<% end -%>
+<% if not @round_robin.nil? -%>
+	round-robin: <%= @round_robin == true ? 'yes' : 'no' %>
+<% end -%>
+<% if not @zonefiles_check.nil? -%>
+	zonefiles-check: <%= @zonefiles_check == true ? 'yes' : 'no' %>
+<% end -%>
+<% if @zonefiles_write -%>
+	zonefiles-write: <%= @zonefiles_write %>
+<% end -%>
+<% if @rrl_size -%>
+	rrl-size: <%= @rrl_size %>
+<% end -%>
+<% if @rrl_ratelimit -%>
+	rrl-ratelimit: <%= @rrl_ratelimit %>
+<% end -%>
+<% if @rrl_slip -%>
+	rrl-slip: <%= @rrl_slip %>
+<% end -%>
+<% if @rrl_ipv4_prefix_length -%>
+	rrl-ipv4-prefix-length: <%= @rrl_ipv4_prefix_length %>
+<% end -%>
+<% if @rrl_ipv6_prefix_length -%>
+	rrl-ipv6-prefix-length: <%= @rrl_ipv6_prefix_length %>
+<% end -%>
+<% if @rrl_whitelist_ratelimit -%>
+	rrl-whitelist-ratelimit: <%= @rrl_whitelist_ratelimit %>
+<% end -%>
+<% if not @control_enable.nil? -%>
+
+remote-control:
+	control-enable: <%= @control_enable == true ? 'yes' : 'no' %>
+<% if @control_interface -%>
+<%   @control_interface.each do |i| -%>
+	control-interface: <%= i %>
+<%   end -%>
+<% end -%>
+<% if @control_port -%>
+	control-port: <%= @control_port %>
+<% end -%>
+<% if @server_key_file -%>
+	server-key-file: "<%= @server_key_file %>"
+<% end -%>
+<% if @server_cert_file -%>
+	server-cert-file: "<%= @server_cert_file %>"
+<% end -%>
+<% if @control_key_file -%>
+	control-key-file: "<%= @control_key_file %>"
+<% end -%>
+<% if @control_cert_file -%>
+	control-cert-file: "<%= @control_cert_file %>"
+<% end -%>
+<% end -%>

@@ -1,0 +1,40 @@
+
+pattern:
+	name: "<%= @name %>"
+<% if @allow_notify -%>
+<%   @allow_notify.each do |i| -%>
+	allow-notify: <%= i.split(/\s+/).join(' ') %>
+<%   end -%>
+<% end -%>
+<% if not @allow_axfr_fallback.nil? -%>
+	allow-axfr-fallback: <%= @allow_axfr_fallback == true ? 'yes' : 'no' %>
+<% end -%>
+<% if @notifies -%>
+<%   @notifies.each do |i| -%>
+	notify: <%= i.split(/\s+/).join(' ') %>
+<%   end -%>
+<% end -%>
+<% if @notify_retry -%>
+	notify-retry: <%= @notify_retry %>
+<% end -%>
+<% if @outgoing_interface -%>
+	outgoing-interface: <%= @outgoing_interface %>
+<% end -%>
+<% if @provide_xfr -%>
+<%   @provide_xfr.each do |i| -%>
+	provide-xfr: <%= i.split(/\s+/).join(' ') %>
+<%   end -%>
+<% end -%>
+<% if @request_xfr -%>
+<%   @request_xfr.each do |i| -%>
+	request-xfr: <%= i.split(/\s+/).join(' ') %>
+<%   end -%>
+<% end -%>
+<% if @rrl_whitelist -%>
+<%   @rrl_whitelist.each do |i| -%>
+	rrl-whitelist: <%= i %>
+<%   end -%>
+<% end -%>
+<% if @zonestats -%>
+	zonestats: "<%= @zonestats %>"
+<% end -%>

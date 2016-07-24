@@ -1,0 +1,71 @@
+{
+  "name": "bodgit-nsd",
+  "version": "1.0.0",
+  "author": "bodgit",
+  "summary": "Puppet Module for managing NSD",
+  "license": "Apache-2.0",
+  "source": "https://github.com/bodgit/puppet-nsd",
+  "project_page": "https://github.com/bodgit/puppet-nsd",
+  "issues_url": "https://github.com/bodgit/puppet-nsd/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OpenBSD",
+      "operatingsystemrelease": [
+        "5.8",
+        "5.9"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "tags": [
+    "nsd",
+    "dns"
+  ],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.6.0 <5.0.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=2.1.0 <3.0.0"
+    },
+    {
+      "name": "bodgit/bodgitlib",
+      "version_requirement": ">=1.2.0 <2.0.0"
+    }
+  ]
+}
