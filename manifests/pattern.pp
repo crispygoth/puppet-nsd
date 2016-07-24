@@ -19,6 +19,8 @@ define nsd::pattern (
   if $allow_notify {
     validate_array($allow_notify)
     $_allow_notify_keys = validate_nsd_acl($allow_notify, ['NOKEY', 'BLOCKED'], [], true)
+  } else {
+    $_allow_notify_keys = []
   }
   if $allow_axfr_fallback {
     validate_bool($allow_axfr_fallback)
@@ -26,6 +28,8 @@ define nsd::pattern (
   if $notifies {
     validate_array($notifies)
     $_notifies_keys = validate_nsd_acl($notifies, ['NOKEY'], [])
+  } else {
+    $_notifies_keys = []
   }
   if $notify_retry {
     validate_integer($notify_retry)
@@ -37,10 +41,14 @@ define nsd::pattern (
   if $provide_xfr {
     validate_array($provide_xfr)
     $_provide_xfr_keys = validate_nsd_acl($provide_xfr, ['NOKEY', 'BLOCKED'], [], true)
+  } else {
+    $_provide_xfr_keys = []
   }
   if $request_xfr {
     validate_array($request_xfr)
     $_request_xfr_keys = validate_nsd_acl($request_xfr, ['NOKEY'], ['AXFR', 'UDP'])
+  } else {
+    $_request_xfr_keys = []
   }
   if $rrl_whitelist {
     validate_array($rrl_whitelist)
