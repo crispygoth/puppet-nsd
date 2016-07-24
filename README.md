@@ -450,7 +450,7 @@ include ::nsd
 }
 
 ::nsd::zone { 'example.com':
-  source => 'puppet:///modules/example/example.com.zone',
+  source      => 'puppet:///modules/example/example.com.zone',
   provide_xfr => [
     "${::network}&${::netmask} example",
     "${::network6}&${::netmask6} example",
