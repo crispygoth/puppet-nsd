@@ -544,7 +544,7 @@ class { '::nsd':
 
 ### Functions
 
-* [`validate_nsd_acl`](#function-validate_nsd_acl):
+* [`validate_nsd_acl`](#function-validate_nsd_acl): Validate NSD ACL entries.
 
 ## Limitations
 
