@@ -27,8 +27,6 @@ describe 'nsd' do
         facts
       end
 
-      it { should contain_anchor('nsd::begin') }
-      it { should contain_anchor('nsd::end') }
       it { should contain_class('nsd') }
       it { should contain_class('nsd::config') }
       it { should contain_class('nsd::install') }

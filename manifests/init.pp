@@ -193,13 +193,9 @@ class nsd (
     validate_absolute_path($zonesdir)
   }
 
-  include ::nsd::install
-  include ::nsd::config
-  include ::nsd::service
+  contain ::nsd::install
+  contain ::nsd::config
+  contain ::nsd::service
 
-  anchor { 'nsd::begin': }
-  anchor { 'nsd::end': }
-
-  Anchor['nsd::begin'] -> Class['::nsd::install'] ~> Class['::nsd::config']
-    ~> Class['::nsd::service'] -> Anchor['nsd::end']
+  Class['::nsd::install'] ~> Class['::nsd::config'] ~> Class['::nsd::service']
 }
