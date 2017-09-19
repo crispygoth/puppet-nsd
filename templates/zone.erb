@@ -9,8 +9,8 @@ zone:
 	allow-notify: <%= i.split(/\s+/).join(' ') %>
 <%   end -%>
 <% end -%>
-<% if not @allow_axfr_fallback.nil? -%>
-	allow-axfr-fallback: <%= @allow_axfr_fallback == true ? 'yes' : 'no' %>
+<% unless @allow_axfr_fallback.nil? -%>
+	allow-axfr-fallback: <%= @allow_axfr_fallback ? 'yes' : 'no' %>
 <% end -%>
 <% if @notifies -%>
 <%   @notifies.each do |i| -%>
