@@ -1,4 +1,4 @@
-#
+# @!visibility private
 class nsd::service {
 
   service { $::nsd::service_name:

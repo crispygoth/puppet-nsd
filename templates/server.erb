@@ -4,7 +4,7 @@ server:
 <% end -%>
 <% if @ip_address -%>
 <%   @ip_address.each do |i| -%>
-	ip-address: <%= i %>
+	ip-address: <%= Array(i).join('@') %>
 <%   end -%>
 <% end -%>
 <% unless @ip_transparent.nil? -%>

@@ -1,4 +1,4 @@
-#
+# @!visibility private
 class nsd::install {
 
   if $::nsd::manage_package {

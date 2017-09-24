@@ -1,4 +1,4 @@
-#
+# @!visibility private
 class nsd::config {
 
   $conf_dir                = $::nsd::conf_dir
@@ -49,11 +49,14 @@ class nsd::config {
   $zonelistfile            = $::nsd::zonelistfile
   $zonesdir                = $::nsd::zonesdir
 
-  case $::osfamily { # lint:ignore:case_without_default
+  case $::osfamily {
     'RedHat': {
       file { '/etc/sysconfig/nsd':
         ensure => absent,
       }
+    }
+    default: {
+      # noop
     }
   }
 
