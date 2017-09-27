@@ -54,10 +54,10 @@ describe 'nsd::zone' do
             super().merge(
               {
                 :notifies    => [
-                  '1.2.3.4 test',
+                  '1.2.3.4 test.',
                 ],
                 :provide_xfr => [
-                  '1.2.3.4 test',
+                  '1.2.3.4 test.',
                 ],
               }
             )
@@ -69,12 +69,12 @@ describe 'nsd::zone' do
 
           context 'with a key defined', :compile do
             let(:pre_condition) do
-              super() + ' ::nsd::key { "test": algorithm => "hmac-sha1", secret => "" }'
+              super() + ' ::nsd::key { "test.": algorithm => "hmac-sha1", secret => "" }'
             end
 
-            it { should contain_concat__fragment('nsd zone test').that_requires('Nsd::Key[test]') }
-            it { should contain_concat__fragment('nsd key test') }
-            it { should contain_nsd__key('test') }
+            it { should contain_concat__fragment('nsd zone test').that_requires('Nsd::Key[test.]') }
+            it { should contain_concat__fragment('nsd key test.') }
+            it { should contain_nsd__key('test.') }
           end
         end
 

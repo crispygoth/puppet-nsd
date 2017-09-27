@@ -32,10 +32,10 @@ describe 'nsd::pattern' do
           let(:params) do
             {
               :allow_notify => [
-                '1.2.3.4 test',
+                '1.2.3.4 test.',
               ],
               :request_xfr  => [
-                '1.2.3.4 test',
+                '1.2.3.4 test.',
               ],
             }
           end
@@ -46,12 +46,12 @@ describe 'nsd::pattern' do
 
           context 'with a key defined', :compile do
             let(:pre_condition) do
-              super() + ' ::nsd::key { "test": algorithm => "hmac-sha1", secret => "" }'
+              super() + ' ::nsd::key { "test.": algorithm => "hmac-sha1", secret => "" }'
             end
 
-            it { should contain_concat__fragment('nsd pattern test').that_requires('Nsd::Key[test]') }
-            it { should contain_concat__fragment('nsd key test') }
-            it { should contain_nsd__key('test') }
+            it { should contain_concat__fragment('nsd pattern test').that_requires('Nsd::Key[test.]') }
+            it { should contain_concat__fragment('nsd key test.') }
+            it { should contain_nsd__key('test.') }
           end
         end
       end
