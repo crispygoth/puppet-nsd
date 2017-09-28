@@ -6,7 +6,20 @@ describe 'nsd::pattern' do
   end
 
   let(:params) do
-    {}
+    {
+      :allow_notify => [
+        ['1.2.3.4', 'test.'],
+      ],
+      :notifies     => [
+        ['1.2.3.4', 'NOKEY'],
+      ],
+      :provide_xfr  => [
+        ['1.2.3.4', 'BLOCKED'],
+      ],
+      :request_xfr  => [
+        ['1.2.3.4', 'test.'],
+      ],
+    }
   end
 
   on_supported_os.each do |os, facts|
@@ -25,35 +38,17 @@ describe 'nsd::pattern' do
         end
 
         it { should contain_class('nsd') }
-        it { should contain_concat__fragment('nsd pattern test') }
+        it { should contain_concat__fragment('nsd pattern test').with_content(<<-EOS.gsub(/^ +/, ''))
+
+          pattern:
+          	name: "test"
+          	allow-notify: 1.2.3.4 test.
+          	notify: 1.2.3.4 NOKEY
+          	provide-xfr: 1.2.3.4 BLOCKED
+          	request-xfr: 1.2.3.4 test.
+          EOS
+        }
         it { should contain_nsd__pattern('test') }
-
-        context 'and a TSIG key' do
-          let(:params) do
-            {
-              :allow_notify => [
-                '1.2.3.4 test.',
-              ],
-              :request_xfr  => [
-                '1.2.3.4 test.',
-              ],
-            }
-          end
-
-          context 'with no key defined' do
-            it { expect { should compile }.to raise_error(/Could not find resource/) }
-          end
-
-          context 'with a key defined', :compile do
-            let(:pre_condition) do
-              super() + ' ::nsd::key { "test.": algorithm => "hmac-sha1", secret => "" }'
-            end
-
-            it { should contain_concat__fragment('nsd pattern test').that_requires('Nsd::Key[test.]') }
-            it { should contain_concat__fragment('nsd key test.') }
-            it { should contain_nsd__key('test.') }
-          end
-        end
       end
     end
   end
