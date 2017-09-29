@@ -20,16 +20,16 @@ describe 'nsd' do
     pp = <<-EOS
       include ::nsd
 
-      ::nsd::key { 'localhost':
+      ::nsd::key { 'localhost.':
         algorithm => 'hmac-sha256',
-        secret    => '6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=',
+        secret    => 'NwUfn0VTJr/tQABDTocrc2D6Ddto9JYQjD0KUkRc7HI=',
       }
 
-      ::nsd::zone { 'example.com':
+      ::nsd::zone { 'example.com.':
         source      => '/root/example.com.zone',
         provide_xfr => [
-          '127.0.0.0/8 localhost',
-          '::1 localhost',
+          ['127.0.0.0/8', 'localhost.'],
+          ['::1', 'localhost.'],
         ],
       }
 
@@ -115,7 +115,7 @@ describe 'nsd' do
     its(:stdout) { should match /; Transfer failed\./ }
   end
 
-  describe command('dig -y hmac-sha256:localhost:6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc= @localhost example.com axfr +time=1 +tries=1') do
+  describe command('dig -y hmac-sha256:localhost.:NwUfn0VTJr/tQABDTocrc2D6Ddto9JYQjD0KUkRc7HI= @localhost example.com axfr +time=1 +tries=1') do
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match /example\.com\.\s+86400\s+IN\s+SOA\s+ns1\.example\.com\.\s+hostmaster\.example\.com\.\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+/ }
     its(:stdout) { should match /localhost\.\s+0\s+ANY\s+TSIG\s+hmac-sha256\.\s+\d+\s+\d+\s+\d+\s+\S+\s+\d+\s+NOERROR\s+0/ }
