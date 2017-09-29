@@ -1,7 +1,79 @@
 # Installs and configures NSD.
 #
-# @example Declaring the class
+# @example Configure NSD with a single zone
 #   include ::nsd
+#
+#   ::nsd::zone { 'example.com.':
+#     source => 'puppet:///modules/example/example.com.zone',
+#   }
+#
+# @example Update the above example to allow zone transfers from other machines on the same network protected with the given TSIG key
+#   include ::nsd
+#
+#   ::nsd::key { 'example.':
+#     algorithm => 'hmac-sha256',
+#     secret    => '6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=',
+#   }
+#
+#   ::nsd::zone { 'example.com.':
+#     source      => 'puppet:///modules/example/example.com.zone',
+#     provide_xfr => [
+#       [$::network, $::netmask, 'example.'],
+#       ["${::network6}/64", 'example.'],
+#     ],
+#   }
+#
+# @example Configure NSD listening on the primary interface only as a slave for a single zone protected with the given TSIG key
+#   class { '::nsd':
+#     ip_address => [
+#       $::ipaddress,
+#       $::ipaddress6,
+#     ],
+#   }
+#
+#   ::nsd::key { 'example.':
+#     algorithm => 'hmac-sha256',
+#     secret    => '6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=',
+#   }
+#
+#   ::nsd::zone { 'example.com.':
+#     allow_notify => [
+#       ['192.0.2.1', 'example.'],
+#     ],
+#     request_xfr  => [
+#       ['AXFR', '192.0.2.1', 'example.'],
+#     ],
+#   }
+#
+# @example Update NSD to slave more than one zone and make use of a pattern to simplify the configuration
+#   class { '::nsd':
+#     ip_address => [
+#       $::ipaddress,
+#       $::ipaddress6,
+#     ],
+#   }
+#
+#   ::nsd::key { 'example.':
+#     algorithm => 'hmac-sha256',
+#     secret    => '6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=',
+#   }
+#
+#   ::nsd::pattern { 'example':
+#     allow_notify => [
+#       ['192.0.2.1', 'example.'],
+#     ],
+#     request_xfr  => [
+#       ['AXFR', '192.0.2.1', 'example.'],
+#     ],
+#   }
+#
+#   ::nsd::zone { 'example.com.':
+#     include_pattern => 'example',
+#   }
+#
+#   ::nsd::zone { 'example.org.':
+#     include_pattern => 'example',
+#   }
 #
 # @param conf_dir
 # @param group
