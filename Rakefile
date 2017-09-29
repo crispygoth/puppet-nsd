@@ -30,5 +30,6 @@ PuppetLint.configuration.ignore_paths = ['pkg/**/*.pp', 'spec/**/*.pp', 'vendor/
 PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.relative = true
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+PuppetLint.configuration.send('disable_unquoted_string_in_selector')
 
 PuppetSyntax.exclude_paths = ['pkg/**/*', 'spec/**/*', 'vendor/**/*']
