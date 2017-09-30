@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: nsd
+  
+    &mdash; Documentation by YARD 0.9.8
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::nsd";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (n)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">nsd</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: nsd</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>::nsd::params</dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/init.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+<p>Installs and configures NSD.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Configure NSD with a single zone</p>
+</div></p>
+      
+      <pre class="example code"><code>include ::nsd
+
+::nsd::zone { &#39;example.com.&#39;:
+  source =&gt; &#39;puppet:///modules/example/example.com.zone&#39;,
+}</code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Update the above example to allow zone transfers from other machines on the
+same network protected with the given TSIG key</p>
+</div></p>
+      
+      <pre class="example code"><code>include ::nsd
+
+::nsd::key { &#39;example.&#39;:
+  algorithm =&gt; &#39;hmac-sha256&#39;,
+  secret    =&gt; &#39;6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=&#39;,
+}
+
+::nsd::zone { &#39;example.com.&#39;:
+  source      =&gt; &#39;puppet:///modules/example/example.com.zone&#39;,
+  provide_xfr =&gt; [
+    [$::network, $::netmask, &#39;example.&#39;],
+    [&quot;${::network6}/64&quot;, &#39;example.&#39;],
+  ],
+}</code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Configure NSD listening on the primary interface only as a slave for a
+single zone protected with the given TSIG key</p>
+</div></p>
+      
+      <pre class="example code"><code>class { &#39;::nsd&#39;:
+  ip_address =&gt; [
+    $::ipaddress,
+    $::ipaddress6,
+  ],
+}
+
+::nsd::key { &#39;example.&#39;:
+  algorithm =&gt; &#39;hmac-sha256&#39;,
+  secret    =&gt; &#39;6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=&#39;,
+}
+
+::nsd::zone { &#39;example.com.&#39;:
+  allow_notify =&gt; [
+    [&#39;192.0.2.1&#39;, &#39;example.&#39;],
+  ],
+  request_xfr  =&gt; [
+    [&#39;AXFR&#39;, &#39;192.0.2.1&#39;, &#39;example.&#39;],
+  ],
+}</code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Update NSD to slave more than one zone and make use of a pattern to
+simplify the configuration</p>
+</div></p>
+      
+      <pre class="example code"><code>class { &#39;::nsd&#39;:
+  ip_address =&gt; [
+    $::ipaddress,
+    $::ipaddress6,
+  ],
+}
+
+::nsd::key { &#39;example.&#39;:
+  algorithm =&gt; &#39;hmac-sha256&#39;,
+  secret    =&gt; &#39;6z+8iKRIQrwN43TFfO/Rf2NHzpHIFVi6PsJ7dDESclc=&#39;,
+}
+
+::nsd::pattern { &#39;example&#39;:
+  allow_notify =&gt; [
+    [&#39;192.0.2.1&#39;, &#39;example.&#39;],
+  ],
+  request_xfr  =&gt; [
+    [&#39;AXFR&#39;, &#39;192.0.2.1&#39;, &#39;example.&#39;],
+  ],
+}
+
+::nsd::zone { &#39;example.com.&#39;:
+  include_pattern =&gt; &#39;example&#39;,
+}
+
+::nsd::zone { &#39;example.org.&#39;:
+  include_pattern =&gt; &#39;example&#39;,
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>conf_dir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::conf_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>group</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::group</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_control</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::manage_control</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_package</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::manage_package</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_name</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::package_name</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::service_name</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>chroot</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>control_cert_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::control_cert_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>control_enable</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::control_enable</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>control_interface</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array[IP::Address::NoSubnet, 1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>control_key_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::control_key_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>control_port</span>
+      
+      
+        <span class='type'>(<tt>Optional[Bodgitlib::Port]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>database</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>do_ip4</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>do_ip6</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hide_version</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>identity</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ip_address</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array[NSD::Interface, 1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ip_transparent</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ipv4_edns_size</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ipv6_edns_size</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_time_ascii</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>logfile</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>minimal_responses</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nsid</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>outgoing_tcp_mss</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pidfile</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>port</span>
+      
+      
+        <span class='type'>(<tt>Optional[Bodgitlib::Port]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>reuseport</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>round_robin</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rrl_ipv4_prefix_length</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0, 32]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rrl_ipv6_prefix_length</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0, 128]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rrl_ratelimit</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rrl_size</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rrl_slip</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rrl_whitelist_ratelimit</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server_cert_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::server_cert_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server_count</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server_key_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::server_key_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>statistics</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tcp_count</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tcp_mss</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tcp_query_count</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tcp_timeout</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>username</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::username</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>verbosity</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0, 3]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>version</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xfrd_reload_timeout</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[-1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xfrdfile</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xfrdir</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>zonefiles_check</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>zonefiles_write</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>zonelistfile</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>zonesdir</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nsd::params::zonesdir</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="../puppet_defined_types/nsd_3A_3Akey.html" title="puppet_defined_types::nsd::key (puppet_defined_type)">::nsd::key</a></span></li>
+    
+      <li><span class='object_link'><a href="../puppet_defined_types/nsd_3A_3Apattern.html" title="puppet_defined_types::nsd::pattern (puppet_defined_type)">::nsd::pattern</a></span></li>
+    
+      <li><span class='object_link'><a href="../puppet_defined_types/nsd_3A_3Azone.html" title="puppet_defined_types::nsd::zone (puppet_defined_type)">::nsd::zone</a></span></li>
+    
+  </ul>
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 136</span>
+
+class nsd (
+  Stdlib::Absolutepath                      $conf_dir                = $::nsd::params::conf_dir,
+  String                                    $group                   = $::nsd::params::group,
+  Boolean                                   $manage_control          = $::nsd::params::manage_control,
+  Boolean                                   $manage_package          = $::nsd::params::manage_package,
+  Optional[String]                          $package_name            = $::nsd::params::package_name,
+  String                                    $service_name            = $::nsd::params::service_name,
+  # Below map to global configuration parameters
+  Optional[Stdlib::Absolutepath]            $chroot                  = undef,
+  Optional[Stdlib::Absolutepath]            $control_cert_file       = $::nsd::params::control_cert_file,
+  Optional[Boolean]                         $control_enable          = $::nsd::params::control_enable,
+  Optional[Array[IP::Address::NoSubnet, 1]] $control_interface       = undef,
+  Optional[Stdlib::Absolutepath]            $control_key_file        = $::nsd::params::control_key_file,
+  Optional[Bodgitlib::Port]                 $control_port            = undef,
+  Optional[Stdlib::Absolutepath]            $database                = undef,
+  Optional[Boolean]                         $do_ip4                  = undef,
+  Optional[Boolean]                         $do_ip6                  = undef,
+  Optional[Boolean]                         $hide_version            = undef,
+  Optional[String]                          $identity                = undef,
+  Optional[Array[NSD::Interface, 1]]        $ip_address              = undef,
+  Optional[Boolean]                         $ip_transparent          = undef,
+  Optional[Integer[0]]                      $ipv4_edns_size          = undef,
+  Optional[Integer[0]]                      $ipv6_edns_size          = undef,
+  Optional[Boolean]                         $log_time_ascii          = undef,
+  Optional[Stdlib::Absolutepath]            $logfile                 = undef,
+  Optional[Boolean]                         $minimal_responses       = undef,
+  Optional[String]                          $nsid                    = undef,
+  Optional[Integer[0]]                      $outgoing_tcp_mss        = undef,
+  Optional[Stdlib::Absolutepath]            $pidfile                 = undef,
+  Optional[Bodgitlib::Port]                 $port                    = undef,
+  Optional[Boolean]                         $reuseport               = undef,
+  Optional[Boolean]                         $round_robin             = undef,
+  Optional[Integer[0, 32]]                  $rrl_ipv4_prefix_length  = undef,
+  Optional[Integer[0, 128]]                 $rrl_ipv6_prefix_length  = undef,
+  Optional[Integer[0]]                      $rrl_ratelimit           = undef,
+  Optional[Integer[0]]                      $rrl_size                = undef,
+  Optional[Integer[0]]                      $rrl_slip                = undef,
+  Optional[Integer[0]]                      $rrl_whitelist_ratelimit = undef,
+  Optional[Stdlib::Absolutepath]            $server_cert_file        = $::nsd::params::server_cert_file,
+  Optional[Integer[1]]                      $server_count            = undef,
+  Optional[Stdlib::Absolutepath]            $server_key_file         = $::nsd::params::server_key_file,
+  Optional[Integer[0]]                      $statistics              = undef,
+  Optional[Integer[0]]                      $tcp_count               = undef,
+  Optional[Integer[0]]                      $tcp_mss                 = undef,
+  Optional[Integer[0]]                      $tcp_query_count         = undef,
+  Optional[Integer[0]]                      $tcp_timeout             = undef,
+  Optional[String]                          $username                = $::nsd::params::username,
+  Optional[Integer[0, 3]]                   $verbosity               = undef,
+  Optional[String]                          $version                 = undef,
+  Optional[Integer[-1]]                     $xfrd_reload_timeout     = undef,
+  Optional[Stdlib::Absolutepath]            $xfrdfile                = undef,
+  Optional[Stdlib::Absolutepath]            $xfrdir                  = undef,
+  Optional[Boolean]                         $zonefiles_check         = undef,
+  Optional[Integer[0]]                      $zonefiles_write         = undef,
+  Optional[Stdlib::Absolutepath]            $zonelistfile            = undef,
+  Optional[Stdlib::Absolutepath]            $zonesdir                = $::nsd::params::zonesdir,
+) inherits ::nsd::params {
+
+  if $manage_control and ($control_cert_file != $::nsd::params::control_cert_file or $control_key_file != $::nsd::params::control_key_file or $server_cert_file != $::nsd::params::server_cert_file or $server_key_file != $::nsd::params::server_key_file) {
+    fail(&#39;Cannot have $manage_control enabled with non-standard locations for remote control keys and/or certificates&#39;)
+  }
+
+  contain ::nsd::install
+  contain ::nsd::config
+  contain ::nsd::service
+
+  Class[&#39;::nsd::install&#39;] ~&gt; Class[&#39;::nsd::config&#39;] ~&gt; Class[&#39;::nsd::service&#39;]
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+  Generated on Sat Sep 30 20:11:15 2017 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.8 (ruby-2.2.5).
+</div>
+
+    </div>
+  </body>
+</html>
