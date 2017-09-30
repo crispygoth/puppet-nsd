@@ -98,7 +98,9 @@
 # @param ipv6_edns_size
 # @param log_time_ascii
 # @param logfile
+# @param minimal_responses
 # @param nsid
+# @param outgoing_tcp_mss
 # @param pidfile
 # @param port
 # @param reuseport
@@ -114,6 +116,7 @@
 # @param server_key_file
 # @param statistics
 # @param tcp_count
+# @param tcp_mss
 # @param tcp_query_count
 # @param tcp_timeout
 # @param username
@@ -155,7 +158,9 @@ class nsd (
   Optional[Integer[0]]                      $ipv6_edns_size          = undef,
   Optional[Boolean]                         $log_time_ascii          = undef,
   Optional[Stdlib::Absolutepath]            $logfile                 = undef,
+  Optional[Boolean]                         $minimal_responses       = undef,
   Optional[String]                          $nsid                    = undef,
+  Optional[Integer[0]]                      $outgoing_tcp_mss        = undef,
   Optional[Stdlib::Absolutepath]            $pidfile                 = undef,
   Optional[Bodgitlib::Port]                 $port                    = undef,
   Optional[Boolean]                         $reuseport               = undef,
@@ -171,6 +176,7 @@ class nsd (
   Optional[Stdlib::Absolutepath]            $server_key_file         = $::nsd::params::server_key_file,
   Optional[Integer[0]]                      $statistics              = undef,
   Optional[Integer[0]]                      $tcp_count               = undef,
+  Optional[Integer[0]]                      $tcp_mss                 = undef,
   Optional[Integer[0]]                      $tcp_query_count         = undef,
   Optional[Integer[0]]                      $tcp_timeout             = undef,
   Optional[String]                          $username                = $::nsd::params::username,

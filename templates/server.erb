@@ -73,6 +73,12 @@ server:
 <% if @tcp_timeout -%>
 	tcp-timeout: <%= @tcp_timeout %>
 <% end -%>
+<% if @tcp_mss -%>
+	tcp-mss: <%= @tcp_mss %>
+<% end -%>
+<% if @outgoing_tcp_mss -%>
+	outgoing-tcp-mss: <%= @outgoing_tcp_mss %>
+<% end -%>
 <% if @ipv4_edns_size -%>
 	ipv4-edns-size: <%= @ipv4_edns_size %>
 <% end -%>
@@ -90,6 +96,9 @@ server:
 <% end -%>
 <% unless @round_robin.nil? -%>
 	round-robin: <%= @round_robin ? 'yes' : 'no' %>
+<% end -%>
+<% unless @minimal_responses.nil? -%>
+	minimal-responses: <%= @minimal_responses ? 'yes' : 'no' %>
 <% end -%>
 <% unless @zonefiles_check.nil? -%>
 	zonefiles-check: <%= @zonefiles_check ? 'yes' : 'no' %>

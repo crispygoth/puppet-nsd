@@ -20,7 +20,9 @@ class nsd::config {
   $ipv6_edns_size          = $::nsd::ipv6_edns_size
   $log_time_ascii          = $::nsd::log_time_ascii
   $logfile                 = $::nsd::logfile
+  $minimal_responses       = $::nsd::minimal_responses
   $nsid                    = $::nsd::nsid
+  $outgoing_tcp_mss        = $::nsd::outgoing_tcp_mss
   $pidfile                 = $::nsd::pidfile
   $port                    = $::nsd::port
   $reuseport               = $::nsd::reuseport
@@ -36,6 +38,7 @@ class nsd::config {
   $server_key_file         = $::nsd::server_key_file
   $statistics              = $::nsd::statistics
   $tcp_count               = $::nsd::tcp_count
+  $tcp_mss                 = $::nsd::tcp_mss
   $tcp_query_count         = $::nsd::tcp_query_count
   $tcp_timeout             = $::nsd::tcp_timeout
   $username                = $::nsd::username
