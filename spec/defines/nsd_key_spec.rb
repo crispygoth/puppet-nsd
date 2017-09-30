@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'nsd::key' do
   let(:title) do
-    'test'
+    'test.'
   end
 
   let(:params) do
@@ -28,8 +28,8 @@ describe 'nsd::key' do
         end
 
         it { should contain_class('nsd') }
-        it { should contain_concat__fragment('nsd key test') }
-        it { should contain_nsd__key('test') }
+        it { should contain_concat__fragment('nsd key test.') }
+        it { should contain_nsd__key('test.') }
       end
     end
   end

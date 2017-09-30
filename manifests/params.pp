@@ -1,4 +1,4 @@
-#
+# @!visibility private
 class nsd::params {
 
   $control_enable = true
@@ -23,7 +23,7 @@ class nsd::params {
       $zonesdir       = '/var/nsd/zones'
     }
     default: {
-      fail("The ${module_name} module is not supported on an ${::osfamily} based system.") # lint:ignore:80chars
+      fail("The ${module_name} module is not supported on an ${::osfamily} based system.")
     }
   }
 

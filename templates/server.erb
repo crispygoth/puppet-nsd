@@ -4,20 +4,20 @@ server:
 <% end -%>
 <% if @ip_address -%>
 <%   @ip_address.each do |i| -%>
-	ip-address: <%= i %>
+	ip-address: <%= Array(i).join('@') %>
 <%   end -%>
 <% end -%>
-<% if not @ip_transparent.nil? -%>
-	ip_transparent: <%= @ip_transparent == true ? 'yes' : 'no' %>
+<% unless @ip_transparent.nil? -%>
+	ip_transparent: <%= @ip_transparent ? 'yes' : 'no' %>
 <% end -%>
-<% if not @reuseport.nil? -%>
-	reuseport: <%= @reuseport == true ? 'yes' : 'no' %>
+<% unless @reuseport.nil? -%>
+	reuseport: <%= @reuseport ? 'yes' : 'no' %>
 <% end -%>
-<% if not @do_ip4.nil? -%>
-	do-ip4: <%= @do_ip4 == true ? 'yes' : 'no' %>
+<% unless @do_ip4.nil? -%>
+	do-ip4: <%= @do_ip4 ? 'yes' : 'no' %>
 <% end -%>
-<% if not @do_ip6.nil? -%>
-	do-ip6: <%= @do_ip6 == true ? 'yes' : 'no' %>
+<% unless @do_ip6.nil? -%>
+	do-ip6: <%= @do_ip6 ? 'yes' : 'no' %>
 <% end -%>
 <% if @port -%>
 	port: <%= @port %>
@@ -52,8 +52,8 @@ server:
 <% if @xfrdir -%>
 	xfrdir: "<%= @xfrdir %>"
 <% end -%>
-<% if not @hide_version.nil? -%>
-	hide-version: <%= @hide_version == true ? 'yes' : 'no' %>
+<% unless @hide_version.nil? -%>
+	hide-version: <%= @hide_version ? 'yes' : 'no' %>
 <% end -%>
 <% if @version -%>
 	version: "<%= @version %>"
@@ -85,14 +85,14 @@ server:
 <% if @xfrd_reload_timeout -%>
 	xfrd-reload-timeout: <%= @xfrd_reload_timeout %>
 <% end -%>
-<% if not @log_time_ascii.nil? -%>
-	log-time-ascii: <%= @log_time_ascii == true ? 'yes' : 'no' %>
+<% unless @log_time_ascii.nil? -%>
+	log-time-ascii: <%= @log_time_ascii ? 'yes' : 'no' %>
 <% end -%>
-<% if not @round_robin.nil? -%>
-	round-robin: <%= @round_robin == true ? 'yes' : 'no' %>
+<% unless @round_robin.nil? -%>
+	round-robin: <%= @round_robin ? 'yes' : 'no' %>
 <% end -%>
-<% if not @zonefiles_check.nil? -%>
-	zonefiles-check: <%= @zonefiles_check == true ? 'yes' : 'no' %>
+<% unless @zonefiles_check.nil? -%>
+	zonefiles-check: <%= @zonefiles_check ? 'yes' : 'no' %>
 <% end -%>
 <% if @zonefiles_write -%>
 	zonefiles-write: <%= @zonefiles_write %>
@@ -115,28 +115,28 @@ server:
 <% if @rrl_whitelist_ratelimit -%>
 	rrl-whitelist-ratelimit: <%= @rrl_whitelist_ratelimit %>
 <% end -%>
-<% if not @control_enable.nil? -%>
+<% unless @control_enable.nil? -%>
 
 remote-control:
-	control-enable: <%= @control_enable == true ? 'yes' : 'no' %>
-<% if @control_interface -%>
-<%   @control_interface.each do |i| -%>
+	control-enable: <%= @control_enable ? 'yes' : 'no' %>
+<%   if @control_interface -%>
+<%     @control_interface.each do |i| -%>
 	control-interface: <%= i %>
+<%     end -%>
 <%   end -%>
-<% end -%>
-<% if @control_port -%>
+<%   if @control_port -%>
 	control-port: <%= @control_port %>
-<% end -%>
-<% if @server_key_file -%>
+<%   end -%>
+<%   if @server_key_file -%>
 	server-key-file: "<%= @server_key_file %>"
-<% end -%>
-<% if @server_cert_file -%>
+<%   end -%>
+<%   if @server_cert_file -%>
 	server-cert-file: "<%= @server_cert_file %>"
-<% end -%>
-<% if @control_key_file -%>
+<%   end -%>
+<%   if @control_key_file -%>
 	control-key-file: "<%= @control_key_file %>"
-<% end -%>
-<% if @control_cert_file -%>
+<%   end -%>
+<%   if @control_cert_file -%>
 	control-cert-file: "<%= @control_cert_file %>"
-<% end -%>
+<%   end -%>
 <% end -%>
