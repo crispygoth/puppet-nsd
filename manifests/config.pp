@@ -96,7 +96,7 @@ class nsd::config {
   }
 
   ::concat::fragment { 'nsd server':
-    content => template('nsd/server.erb'),
+    content => template("${module_name}/server.erb"),
     order   => '01',
     target  => "${conf_dir}/nsd.conf",
   }
