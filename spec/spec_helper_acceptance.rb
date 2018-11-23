@@ -21,7 +21,6 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', 'puppetlabs-concat'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'bodgit-bodgitlib'),  { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'stahnma-epel'),      { :acceptable_exit_codes => [0,1] }
-      on host, puppet('module', 'install', 'thrnio-ip'),         { :acceptable_exit_codes => [0,1] }
       scp_to(host, File.join(proj_root, 'spec/fixtures/files/example.com.zone'), '/root/example.com.zone')
     end
   end
