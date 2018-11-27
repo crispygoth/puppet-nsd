@@ -1,11 +1,11 @@
 # @since 2.0.0
 type NSD::ACL::ProvideXFR = Variant[
   Tuple[
-    Variant[IP::Address, Tuple[IP::Address, Bodgitlib::Port]],
+    Variant[Stdlib::IP::Address, Tuple[Stdlib::IP::Address, Stdlib::Port]],
     Variant[Bodgitlib::Zone::NonRoot, Enum['NOKEY', 'BLOCKED']]
   ],
   Tuple[
-    Tuple[IP::Address::NoSubnet, Variant[IP::Address::NoSubnet, Bodgitlib::Netmask], Bodgitlib::Port, 2],
+    Tuple[Stdlib::IP::Address::NoSubnet, Variant[Stdlib::IP::Address::NoSubnet, Bodgitlib::Netmask], Stdlib::Port, 2],
     Variant[Bodgitlib::Zone::NonRoot, Enum['NOKEY', 'BLOCKED']]
   ]
 ]
