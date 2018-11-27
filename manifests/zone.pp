@@ -85,6 +85,7 @@ define nsd::zone (
 
   if $content or $source {
     $zonefile = "master/${_filename}"
+    $reload_command = "nsd-control reload ${shell_escape($zone)}"
 
     file { "${::nsd::zonesdir}/${zonefile}":
       ensure       => file,
@@ -95,6 +96,12 @@ define nsd::zone (
       source       => $source,
       validate_cmd => "/usr/sbin/nsd-checkzone ${zone} %",
       before       => ::Concat["${::nsd::conf_dir}/nsd.conf"],
+      notify       => Exec[$reload_command],
+    }
+
+    exec { $reload_command:
+      path        => $::path,
+      refreshonly => true,
     }
   } else {
     $zonefile = "slave/${_filename}"
